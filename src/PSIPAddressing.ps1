@@ -8,6 +8,13 @@ function Get-IPNetwork {
 
         [Parameter(Mandatory, ParameterSetName="SubnetMask")]
         [ValidateScript({$_ -eq ([IPAddress]$_).IPAddressToString})]
+        [ValidateScript({
+            $SMReversed = [IPAddress]$_
+            $SMReversed = $SMReversed.GetAddressBytes()
+            [array]::Reverse($SMReversed)
+            [IPAddress]$SMReversed = $SMReversed
+            [convert]::ToString($SMReversed.Address,2) -match "^[1]*0{0,}$"
+        })]
         [string]$SubnetMask,
 
         [Parameter(Mandatory, ParameterSetName="CIDRNotation")]

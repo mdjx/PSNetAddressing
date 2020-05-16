@@ -10,11 +10,12 @@ Describe 'Unit Tests' {
         }
 
         It 'Throws exception for invalid subnet mask' {
-            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.0.255} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 128.255.255.0} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask "abcd"} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.128.255.0} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.0.255} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 128.255.255.0} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask "abcd"} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
         }
 
         It 'Throws exception if both SubnetMask and SubnetLength are specified' {
