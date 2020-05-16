@@ -1,6 +1,24 @@
 . "$PSScriptRoot\PSIPAddressing.ps1"
 
 Describe 'Unit Tests' {
+
+    Context 'Parameter Tests' {
+        It 'Throws exception for invalid IP address' {
+            {Get-IPNetwork -IPAddress 100.2.3 -SubnetLength 24} | Should Throw "Cannot validate argument on parameter 'IPAddress'"
+            {Get-IPNetwork -IPAddress 1 -SubnetLength 24} | Should Throw "Cannot validate argument on parameter 'IPAddress'"
+            {Get-IPNetwork -IPAddress "abcd" -SubnetLength 24} | Should Throw "Cannot validate argument on parameter 'IPAddress'"
+        }
+
+        It 'Throws exception for invalid subnet mask' {
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.0.255} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 128.255.255.0} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask "abcd"} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
+        }
+
+    }
+
     Context 'Logic Validation' {
 
         It 'Checks /1 Network Space Using CIDR Notation (lower range)' {
