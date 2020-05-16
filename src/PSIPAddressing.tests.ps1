@@ -17,6 +17,10 @@ Describe 'Unit Tests' {
             {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask "abcd"} | Should Throw #"Cannot validate argument on parameter 'SubnetMask'"
         }
 
+        It 'Throws exception if both SubnetMask and SubnetLength are specified' {
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.255 -SubnetLength 24} | Should Throw "Parameter set cannot be resolved using the specified named parameters"
+        }
+
     }
 
     Context 'Logic Validation' {
