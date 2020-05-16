@@ -3,6 +3,70 @@
 Describe 'Unit Tests' {
     Context 'Logic Validation' {
 
+        It 'Checks /1 Network Space Using CIDR Notation (lower range)' {
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -SubnetLength 1
+            
+            $Network.NetworkId | Should -Be '0.0.0.0'
+            $Network.Broadcast | Should -Be '127.255.255.255'
+            $Network.SubnetMask | Should -Be '128.0.0.0'
+            $Network.SubnetLength | Should -Be 1
+            $Network.WildcardMask | Should -Be '127.255.255.255'
+
+            $Network.FirstIP | Should -Be '0.0.0.1'
+            $Network.LastIP | Should -Be '127.255.255.254'
+
+            $Network.TotalIPs | Should -Be 2147483648
+            $Network.UsableIPs | Should -Be 2147483646
+        }
+
+        It 'Checks /1 Network Space Using Subnet Mask Notation  (lower range)' {
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -SubnetMask 128.0.0.0
+            
+            $Network.NetworkId | Should -Be '0.0.0.0'
+            $Network.Broadcast | Should -Be '127.255.255.255'
+            $Network.SubnetMask | Should -Be '128.0.0.0'
+            $Network.SubnetLength | Should -Be 1
+            $Network.WildcardMask | Should -Be '127.255.255.255'
+
+            $Network.FirstIP | Should -Be '0.0.0.1'
+            $Network.LastIP | Should -Be '127.255.255.254'
+
+            $Network.TotalIPs | Should -Be 2147483648
+            $Network.UsableIPs | Should -Be 2147483646
+        }
+
+        It 'Checks /1 Network Space Using CIDR Notation (upper range)' {
+            $Network = Get-IPNetwork -IPAddress 200.2.3.4 -SubnetLength 1
+            
+            $Network.NetworkId | Should -Be '128.0.0.0'
+            $Network.Broadcast | Should -Be '255.255.255.255'
+            $Network.SubnetMask | Should -Be '128.0.0.0'
+            $Network.SubnetLength | Should -Be 1
+            $Network.WildcardMask | Should -Be '127.255.255.255'
+
+            $Network.FirstIP | Should -Be '128.0.0.1'
+            $Network.LastIP | Should -Be '255.255.255.254'
+
+            $Network.TotalIPs | Should -Be 2147483648
+            $Network.UsableIPs | Should -Be 2147483646
+        }
+
+        It 'Checks /1 Network Space Using Subnet Mask Notation  (upper range)' {
+            $Network = Get-IPNetwork -IPAddress 200.2.3.4 -SubnetMask 128.0.0.0
+            
+            $Network.NetworkId | Should -Be '128.0.0.0'
+            $Network.Broadcast | Should -Be '255.255.255.255'
+            $Network.SubnetMask | Should -Be '128.0.0.0'
+            $Network.SubnetLength | Should -Be 1
+            $Network.WildcardMask | Should -Be '127.255.255.255'
+
+            $Network.FirstIP | Should -Be '128.0.0.1'
+            $Network.LastIP | Should -Be '255.255.255.254'
+
+            $Network.TotalIPs | Should -Be 2147483648
+            $Network.UsableIPs | Should -Be 2147483646
+        }
+
         It 'Checks /8 Network Space Using CIDR Notation' {
             $Network = Get-IPNetwork -IPAddress 10.250.1.100 -SubnetLength 8
             
@@ -17,7 +81,6 @@ Describe 'Unit Tests' {
 
             $Network.TotalIPs | Should -Be 16777216
             $Network.UsableIPs | Should -Be 16777214
-            
         }
 
         It 'Checks /8 Network Space Using Subnet Mask Notation' {
@@ -34,7 +97,38 @@ Describe 'Unit Tests' {
 
             $Network.TotalIPs | Should -Be 16777216
             $Network.UsableIPs | Should -Be 16777214
+        }
+
+        It 'Checks /16 Network Space Using CIDR Notation' {
+            $Network = Get-IPNetwork -IPAddress 10.250.1.100 -SubnetLength 16
             
+            $Network.NetworkId | Should -Be '10.250.0.0'
+            $Network.Broadcast | Should -Be '10.250.255.255'
+            $Network.SubnetMask | Should -Be '255.255.0.0'
+            $Network.SubnetLength | Should -Be 16
+            $Network.WildcardMask | Should -Be '0.0.255.255'
+
+            $Network.FirstIP | Should -Be '10.250.0.1'
+            $Network.LastIP | Should -Be '10.250.255.254'
+
+            $Network.TotalIPs | Should -Be 65536
+            $Network.UsableIPs | Should -Be 65534
+        }
+
+        It 'Checks /16 Network Space Using Subnet Mask Notation' {
+            $Network = Get-IPNetwork -IPAddress 10.250.1.100 -SubnetMask 255.255.0.0
+            
+            $Network.NetworkId | Should -Be '10.250.0.0'
+            $Network.Broadcast | Should -Be '10.250.255.255'
+            $Network.SubnetMask | Should -Be '255.255.0.0'
+            $Network.SubnetLength | Should -Be 16
+            $Network.WildcardMask | Should -Be '0.0.255.255'
+
+            $Network.FirstIP | Should -Be '10.250.0.1'
+            $Network.LastIP | Should -Be '10.250.255.254'
+
+            $Network.TotalIPs | Should -Be 65536
+            $Network.UsableIPs | Should -Be 65534
         }
 
         
@@ -56,7 +150,6 @@ Describe 'Unit Tests' {
             $Network.AllIPs.count | Should -Be 254
             $Network.AllIPs[0] | Should -Be '10.250.1.1'
             $Network.AllIPs[-1] | Should -Be '10.250.1.254'
-            
         }
 
         It 'Checks /24 Network Space Using Subnet Mask Notation' {
@@ -119,5 +212,44 @@ Describe 'Unit Tests' {
             $Network.AllIPs[-1] | Should -Be '10.1.1.2'
         }
 
+        It 'Checks /31 Network Space Using CIDR Notation' {
+            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength 31 -ReturnAllIPs
+            
+            $Network.NetworkId | Should -Be '10.1.1.0'
+            $Network.Broadcast | Should -Be '10.1.1.1'
+            $Network.SubnetMask | Should -Be '255.255.255.254'
+            $Network.SubnetLength | Should -Be 31
+            $Network.WildcardMask | Should -Be '0.0.0.1'
+
+            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.LastIP | Should -Be '10.1.1.1'
+
+            $Network.TotalIPs | Should -Be 2
+            $Network.UsableIPs | Should -Be 2
+
+            $Network.AllIPs.count | Should -Be 2
+            $Network.AllIPs[0] | Should -Be '10.1.1.0'
+            $Network.AllIPs[-1] | Should -Be '10.1.1.1'
+        }
+
+        It 'Checks /31 Network Space Using Subnet Mask Notation ' {
+            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.254 -ReturnAllIPs
+            
+            $Network.NetworkId | Should -Be '10.1.1.0'
+            $Network.Broadcast | Should -Be '10.1.1.1'
+            $Network.SubnetMask | Should -Be '255.255.255.254'
+            $Network.SubnetLength | Should -Be 31
+            $Network.WildcardMask | Should -Be '0.0.0.1'
+
+            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.LastIP | Should -Be '10.1.1.1'
+
+            $Network.TotalIPs | Should -Be 2
+            $Network.UsableIPs | Should -Be 2
+
+            $Network.AllIPs.count | Should -Be 2
+            $Network.AllIPs[0] | Should -Be '10.1.1.0'
+            $Network.AllIPs[-1] | Should -Be '10.1.1.1'
+        }
     }
 }
