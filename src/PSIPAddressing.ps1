@@ -24,7 +24,11 @@ function Get-IPNetwork {
     } 
     else {
         [IPAddress]$SubnetMask = $SubnetMask
-        $SubnetLength = [convert]::ToString($SubnetMask.Address,2).length
+        $SMReversed = $SubnetMask.GetAddressBytes()
+        [array]::Reverse($SMReversed)
+        [IPAddress]$SMReversed = $SMReversed
+
+        $SubnetLength = [convert]::ToString($SMReversed.Address,2).replace(0,'').length
     }
 
     
