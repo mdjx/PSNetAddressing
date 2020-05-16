@@ -18,7 +18,7 @@ function Get-IPNetwork {
         [string]$SubnetMask,
 
         [Parameter(Mandatory, ParameterSetName="CIDRNotation")]
-        [ValidateRange(0,32)]
+        [ValidateRange(1,32)]
         [int]$SubnetLength,
 
         [switch]$ReturnAllIPs

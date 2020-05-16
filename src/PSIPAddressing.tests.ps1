@@ -18,6 +18,14 @@ Describe 'Unit Tests' {
             {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask "abcd"} | Should Throw "Cannot validate argument on parameter 'SubnetMask'"
         }
 
+        It 'Throws exception for invalid subnet length' {
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength 255.255.255.} | Should Throw "Cannot process argument transformation on parameter 'SubnetLength'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength -1} | Should Throw "Cannot validate argument on parameter 'SubnetLength'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength 0} | Should Throw "Cannot validate argument on parameter 'SubnetLength'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength 33} | Should Throw "Cannot validate argument on parameter 'SubnetLength'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength "a"} | Should Throw "Cannot process argument transformation on parameter 'SubnetLength'"
+        }
+
         It 'Throws exception if both SubnetMask and SubnetLength are specified' {
             {Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.255 -SubnetLength 24} | Should Throw "Parameter set cannot be resolved using the specified named parameters"
         }
