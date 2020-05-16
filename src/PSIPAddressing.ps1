@@ -19,9 +19,8 @@ function Get-IPDetails {
 
     if ($SubnetLength) {
         $SubnetMask = [IPAddress](([Math]::Pow(2,$SubnetLength) -1) * [Math]::Pow(2, (32 - $SubnetLength)))
-    }
-
-    if ($SubnetMask) {
+    } 
+    else {
         $SubnetLength = [convert]::ToString($SubnetMask.Address,2).length
     }
 
@@ -55,7 +54,7 @@ function Get-IPDetails {
     $AllIPs = [System.Collections.ArrayList]@()
     if ($ReturnAllIPs) {
 
-        if ($UsableIPs -ge 100000) {
+        if ($UsableIPs -ge 500000) {
             Write-Warning ('ReturnAllIPs: Generating an array containing {0:N0} IPs, this may take a little while' -f $UsableIPs)
         }
 
@@ -87,7 +86,7 @@ function Get-IPDetails {
         AllIPs = $AllIPs
     }
 
-    Write-Output $obj
+    Write-Output $obj | Select-Object NetworkId, Broadcast, SubnetMask, SubnetLength, WildcardMask, FirstIP, LastIP, TotalIPs, UsableIPs, AllIPs
 
     <#
 
