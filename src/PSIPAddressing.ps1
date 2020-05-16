@@ -1,14 +1,14 @@
-function Get-IPDetails {
-
+function Get-IPNetwork {
     [CmdletBinding()]
 
     Param(
-
         [Parameter(Mandatory)]
-        [IPAddress]$IPAddress,
+        [ValidateScript({$_ -eq ([IPAddress]$_).IPAddressToString})]
+        [string]$IPAddress,
 
         [Parameter(Mandatory, ParameterSetName="SubnetMask")]
-        [IPAddress]$SubnetMask,
+        [ValidateScript({$_ -eq ([IPAddress]$_).IPAddressToString})]
+        [string]$SubnetMask,
 
         [Parameter(Mandatory, ParameterSetName="CIDRNotation")]
         [ValidateRange(0,32)]
@@ -17,10 +17,13 @@ function Get-IPDetails {
         [switch]$ReturnAllIPs
     )
 
+    [IPAddress]$IPAddress = $IPAddress
+
     if ($SubnetLength) {
-        $SubnetMask = [IPAddress](([Math]::Pow(2,$SubnetLength) -1) * [Math]::Pow(2, (32 - $SubnetLength)))
+        [IPAddress]$SubnetMask = ([Math]::Pow(2,$SubnetLength) -1) * [Math]::Pow(2, (32 - $SubnetLength))
     } 
     else {
+        [IPAddress]$SubnetMask = $SubnetMask
         $SubnetLength = [convert]::ToString($SubnetMask.Address,2).length
     }
 
@@ -105,13 +108,14 @@ function Get-IPDetails {
         [done] - Start IP (network id)
         [done] - End IP (broadcast)
         [done] - Array of all IPs (?)
-        - CIDR notation prefix
+        [done] - CIDR notation prefix
         [done]  - Subnet mask
-        - Number of hosts
+        [done] - Number of hosts
         - Is RFC1918
         [done] - Wildcard
         - fix /32 first last etc 
-        
+        - testing (lol)
+        - binary output?
     #>
 
     <# Notes
