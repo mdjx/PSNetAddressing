@@ -221,7 +221,7 @@ Describe 'Unit Tests' {
             $Network.SubnetLength | Should -Be 31
             $Network.WildcardMask | Should -Be '0.0.0.1'
 
-            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.FirstIP | Should -Be '10.1.1.0'
             $Network.LastIP | Should -Be '10.1.1.1'
 
             $Network.TotalIPs | Should -Be 2
@@ -241,7 +241,7 @@ Describe 'Unit Tests' {
             $Network.SubnetLength | Should -Be 31
             $Network.WildcardMask | Should -Be '0.0.0.1'
 
-            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.FirstIP | Should -Be '10.1.1.0'
             $Network.LastIP | Should -Be '10.1.1.1'
 
             $Network.TotalIPs | Should -Be 2
@@ -249,6 +249,46 @@ Describe 'Unit Tests' {
 
             $Network.AllIPs.count | Should -Be 2
             $Network.AllIPs[0] | Should -Be '10.1.1.0'
+            $Network.AllIPs[-1] | Should -Be '10.1.1.1'
+        }
+
+        It 'Checks /32 Network Space Using CIDR Notation' {
+            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -SubnetLength 32 -ReturnAllIPs
+            
+            $Network.NetworkId | Should -Be '10.1.1.1'
+            $Network.Broadcast | Should -Be '10.1.1.1'
+            $Network.SubnetMask | Should -Be '255.255.255.255'
+            $Network.SubnetLength | Should -Be 32
+            $Network.WildcardMask | Should -Be '0.0.0.0'
+
+            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.LastIP | Should -Be '10.1.1.1'
+
+            $Network.TotalIPs | Should -Be 1
+            $Network.UsableIPs | Should -Be 1
+
+            $Network.AllIPs.count | Should -Be 1
+            $Network.AllIPs[0] | Should -Be '10.1.1.1'
+            $Network.AllIPs[-1] | Should -Be '10.1.1.1'
+        }
+
+        It 'Checks /32 Network Space Using Subnet Mask Notation ' {
+            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.255 -ReturnAllIPs
+            
+            $Network.NetworkId | Should -Be '10.1.1.1'
+            $Network.Broadcast | Should -Be '10.1.1.1'
+            $Network.SubnetMask | Should -Be '255.255.255.255'
+            $Network.SubnetLength | Should -Be 32
+            $Network.WildcardMask | Should -Be '0.0.0.0'
+
+            $Network.FirstIP | Should -Be '10.1.1.1'
+            $Network.LastIP | Should -Be '10.1.1.1'
+
+            $Network.TotalIPs | Should -Be 1
+            $Network.UsableIPs | Should -Be 1
+
+            $Network.AllIPs.count | Should -Be 1
+            $Network.AllIPs[0] | Should -Be '10.1.1.1'
             $Network.AllIPs[-1] | Should -Be '10.1.1.1'
         }
     }
