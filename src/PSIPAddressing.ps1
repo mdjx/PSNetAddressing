@@ -19,15 +19,15 @@ function Get-IPNetwork {
 
         [Parameter(Mandatory, ParameterSetName="CIDRNotation")]
         [ValidateRange(1,32)]
-        [int]$SubnetLength,
+        [int]$PrefixLength,
 
         [switch]$ReturnAllIPs
     )
 
     [IPAddress]$IPAddress = $IPAddress
 
-    if ($SubnetLength) {
-        [IPAddress]$SubnetMask = ([Math]::Pow(2,$SubnetLength) -1) * [Math]::Pow(2, (32 - $SubnetLength))
+    if ($PrefixLength) {
+        [IPAddress]$SubnetMask = ([Math]::Pow(2,$PrefixLength) -1) * [Math]::Pow(2, (32 - $PrefixLength))
     } 
     else {
         [IPAddress]$SubnetMask = $SubnetMask
@@ -35,7 +35,7 @@ function Get-IPNetwork {
         [array]::Reverse($SMReversed)
         [IPAddress]$SMReversed = $SMReversed
 
-        [int]$SubnetLength = [convert]::ToString($SMReversed.Address,2).replace(0,'').length
+        [int]$PrefixLength = [convert]::ToString($SMReversed.Address,2).replace(0,'').length
     }
 
     
@@ -53,7 +53,7 @@ function Get-IPNetwork {
     [Array]::Reverse($LastIPByteArray)
 
     # Handler for /31, /30 CIDR prefix values, and default for all others.  
-    switch ($SubnetLength) {
+    switch ($PrefixLength) {
         31 {
             $TotalIPs = 2
             $UsableIPs = 2
@@ -77,7 +77,7 @@ function Get-IPNetwork {
         default {
 
             # Usable Address Space
-            $TotalIPs = [Math]::pow(2,(32 - $SubnetLength))
+            $TotalIPs = [Math]::pow(2,(32 - $PrefixLength))
             $UsableIPs = $TotalIPs - 2
 
             # First usable IP
@@ -120,7 +120,7 @@ function Get-IPNetwork {
 
     $obj = New-Object -TypeName psobject -Property @{
         SubnetMask = ($SubnetMask).IPAddressToString
-        SubnetLength = $SubnetLength
+        PrefixLength = $PrefixLength
         WildcardMask = ($WildcardMask).IPAddressToString
         NetworkId = ($NetworkId).IPAddressToString
         Broadcast = ($Broadcast).IPAddressToString
@@ -131,5 +131,5 @@ function Get-IPNetwork {
         AllIPs = $AllIPs
     }
 
-    Write-Output $obj | Select-Object NetworkId, Broadcast, SubnetMask, SubnetLength, WildcardMask, FirstIP, LastIP, TotalIPs, UsableIPs, AllIPs
+    Write-Output $obj | Select-Object NetworkId, Broadcast, SubnetMask, PrefixLength, WildcardMask, FirstIP, LastIP, TotalIPs, UsableIPs, AllIPs
 }
