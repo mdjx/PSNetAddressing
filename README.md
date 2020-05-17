@@ -153,5 +153,5 @@ This will install several modules if you do not already have them, see `build.ps
 
 ### Manually
 
-Copy the files from src to `$Home\Documents\WindowsPowerShell\Modules\PSIPAddressing` and rename the `.ps1` file to `.psm1`.
+Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSIPAddressing` and rename the `.ps1` files to `.psm1`. Any files with `test` in the name can be skipped. 
 
