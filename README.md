@@ -1,6 +1,6 @@
-# PSIPAddressing
+# PSNetAddressing
 
-PSIPAddressing is a PowerShell module that makes dealing with IP addresses easy. 
+PSNetAddressing is a PowerShell module that makes dealing with IP addresses easy. 
 
 Given an IP address and subnet mask or CIDR prefix, it returns a list of all IPs inside the subnet, the Network Id, Broadcast, First and Last Usable IPs, and Wildcard Mask. 
 
@@ -16,7 +16,7 @@ $NetworkId = "10.1.1"
 
 However, this isn't great. Validation for` $Subnet` is difficult, working with anything other than a `/24` also requires a lot of work which makes it impractical to cleanly integrate into modules. 
 
-With `PSIPAddressing`, the above code becomes:
+With `PSNetAddressing`, the above code becomes:
 
 ```powershell
 $IPs = (Get-IPNetwork -IPAddress 10.1.1.0 -PrefixLength 24 -ReturnAllIPs).AllIPs
@@ -38,7 +38,8 @@ Specifies the IP or network address.
 
 ```yaml
 Type: String
-Required: True
+Position: 0
+---
 Example: 10.250.1.100
 Example: 192.168.1.1
 Example: 46.250.1.66
@@ -50,7 +51,8 @@ Specifies the Subnet Mask in dotted decimal notation
 
 ```yaml
 Type: String
-Required: False
+Position: 1
+---
 Example: 255.255.255.0
 Example: 255.255.255.252
 Example: 255.255.128.0
@@ -63,7 +65,8 @@ Specifies the PrefixLength in slash notation
 
 ```yaml
 Type: Int
-Required: False
+Position: 1
+---
 Example: 24
 Example: 30
 Example: 16
@@ -113,7 +116,7 @@ AllIPs       : {}
 ```
 
 ```powershell
-PS C:\> Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 30 -ReturnAllIPs
+PS C:\> Get-IPNetwork 10.1.1.1 30 -ReturnAllIPs
 
 
 NetworkId    : 10.1.1.0
@@ -129,7 +132,7 @@ AllIPs       : {10.1.1.1, 10.1.1.2}
 ```
 
 ```powershell
-PS C:\> Get-IPNetwork -IPAddress 45.122.250.67 -SubnetMask 255.255.255.128 -ReturnAllIPs
+PS C:\> Get-IPNetwork -IPAddress 45.122.250.67 255.255.255.128 -ReturnAllIPs
 
 
 NetworkId    : 45.122.250.0
@@ -144,15 +147,25 @@ UsableIPs    : 126
 AllIPs       : {45.122.250.1, 45.122.250.2, 45.122.250.3, 45.122.250.4...}
 ```
 
+
+
 ## Installation
+
 
 ### Via Git
 
 Clone the repository and run `.\build.ps1 deploy`.
 
-This will install several modules if you do not already have them, see `build.ps1` for details. These are only required for the build process and are not otherwise used by `PSIPAddressing`.
+This will install several modules if you do not already have them, see `build.ps1` for details. These are only required for the build process and are not otherwise used by `PSNetAddressing`.
+
 
 ### Manually
 
-Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSIPAddressing` and rename the `.ps1` files to `.psm1`. Any files with `test` in the name can be skipped. 
+Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSNetAddressing` for PowerShell 5.1 or `$Home\Documents\PowerShell\Modules\PSNetAddressing` for PowerShell 7, and rename the `.ps1` files to `.psm1`. 
 
+
+## Release Notes
+
+### `1.0`
+
+Initial release

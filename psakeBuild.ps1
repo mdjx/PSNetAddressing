@@ -2,7 +2,7 @@ properties {
     $script = "$PSScriptRoot\src\"
 }
 
-task default #-depends Analyze, Test
+task default -depends Analyze, Test
 
 task Analyze {
     $saResults = Invoke-ScriptAnalyzer -Path $script -Severity @('Error', 'Warning') -Recurse -Verbose:$false
@@ -20,6 +20,6 @@ task Test {
     }
 }
 
-task Deploy {#-depends Analyze, Test {
+task Deploy -depends Analyze, Test {
     Invoke-PSDeploy -Path '.\deploy.ps1' -Force -Verbose:$VerbosePreference
 }

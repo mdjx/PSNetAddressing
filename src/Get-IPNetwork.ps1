@@ -2,11 +2,11 @@ function Get-IPNetwork {
     [CmdletBinding()]
 
     Param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position=0)]
         [ValidateScript({$_ -eq ([IPAddress]$_).IPAddressToString})]
         [string]$IPAddress,
 
-        [Parameter(Mandatory, ParameterSetName="SubnetMask")]
+        [Parameter(Mandatory, Position=1, ParameterSetName="SubnetMask")]
         [ValidateScript({$_ -eq ([IPAddress]$_).IPAddressToString})]
         [ValidateScript({
             $SMReversed = [IPAddress]$_
@@ -17,8 +17,8 @@ function Get-IPNetwork {
         })]
         [string]$SubnetMask,
 
-        [Parameter(Mandatory, ParameterSetName="CIDRNotation")]
-        [ValidateRange(1,32)]
+        [Parameter(Mandatory, Position=1, ParameterSetName="CIDRNotation")]
+        [ValidateRange(0,32)]
         [int]$PrefixLength,
 
         [switch]$ReturnAllIPs
@@ -26,16 +26,16 @@ function Get-IPNetwork {
 
     [IPAddress]$IPAddress = $IPAddress
 
-    if ($PrefixLength) {
-        [IPAddress]$SubnetMask = ([Math]::Pow(2,$PrefixLength) -1) * [Math]::Pow(2, (32 - $PrefixLength))
-    } 
-    else {
+    if ($SubnetMask) {
         [IPAddress]$SubnetMask = $SubnetMask
         $SMReversed = $SubnetMask.GetAddressBytes()
         [array]::Reverse($SMReversed)
         [IPAddress]$SMReversed = $SMReversed
 
         [int]$PrefixLength = [convert]::ToString($SMReversed.Address,2).replace(0,'').length
+    } 
+    else {
+        [IPAddress]$SubnetMask = ([Math]::Pow(2,$PrefixLength) -1) * [Math]::Pow(2, (32 - $PrefixLength))
     }
 
     

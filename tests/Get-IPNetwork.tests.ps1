@@ -1,4 +1,4 @@
-. "$PSScriptRoot\PSIPAddressing.ps1"
+. "$PSScriptRoot\..\src\Get-IPNetwork.ps1"
 
 Describe 'Unit Tests' {
 
@@ -21,9 +21,8 @@ Describe 'Unit Tests' {
         It 'Throws exception for invalid subnet length' {
             {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 255.255.255.} | Should Throw "Cannot process argument transformation on parameter 'PrefixLength'"
             {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength -1} | Should Throw "Cannot validate argument on parameter 'PrefixLength'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 0} | Should Throw "Cannot validate argument on parameter 'PrefixLength'"
             {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 33} | Should Throw "Cannot validate argument on parameter 'PrefixLength'"
-            {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength "a"} | Should Throw "Cannot process argument transformation on parameter 'PrefixLength'"
+            {Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength "abcd"} | Should Throw "Cannot process argument transformation on parameter 'PrefixLength'"
         }
 
         It 'Throws exception if both SubnetMask and PrefixLength are specified' {
@@ -34,8 +33,40 @@ Describe 'Unit Tests' {
 
     Context 'Logic Validation' {
 
+        It 'Checks /0 Network Space Using CIDR Notation (lower range)' {
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -PrefixLength 0
+            
+            $Network.NetworkId | Should -Be '0.0.0.0'
+            $Network.Broadcast | Should -Be '255.255.255.255'
+            $Network.SubnetMask | Should -Be '0.0.0.0'
+            $Network.PrefixLength | Should -Be 0
+            $Network.WildcardMask | Should -Be '255.255.255.255'
+
+            $Network.FirstIP | Should -Be '0.0.0.1'
+            $Network.LastIP | Should -Be '255.255.255.254'
+
+            $Network.TotalIPs | Should -Be 4294967296
+            $Network.UsableIPs | Should -Be 4294967294
+        }
+
+        It 'Checks /0 Network Space Using Subnet Mask Notation  (lower range)' {
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -SubnetMask 0.0.0.0
+            
+            $Network.NetworkId | Should -Be '0.0.0.0'
+            $Network.Broadcast | Should -Be '255.255.255.255'
+            $Network.SubnetMask | Should -Be '0.0.0.0'
+            $Network.PrefixLength | Should -Be 0
+            $Network.WildcardMask | Should -Be '255.255.255.255'
+
+            $Network.FirstIP | Should -Be '0.0.0.1'
+            $Network.LastIP | Should -Be '255.255.255.254'
+
+            $Network.TotalIPs | Should -Be 4294967296
+            $Network.UsableIPs | Should -Be 4294967294
+        }
+
         It 'Checks /1 Network Space Using CIDR Notation (lower range)' {
-            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -PrefixLength 1
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 1
             
             $Network.NetworkId | Should -Be '0.0.0.0'
             $Network.Broadcast | Should -Be '127.255.255.255'
@@ -51,7 +82,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /1 Network Space Using Subnet Mask Notation  (lower range)' {
-            $Network = Get-IPNetwork -IPAddress 100.2.3.4 -SubnetMask 128.0.0.0
+            $Network = Get-IPNetwork -IPAddress 100.2.3.4 128.0.0.0
             
             $Network.NetworkId | Should -Be '0.0.0.0'
             $Network.Broadcast | Should -Be '127.255.255.255'
@@ -67,7 +98,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /1 Network Space Using CIDR Notation (upper range)' {
-            $Network = Get-IPNetwork -IPAddress 200.2.3.4 -PrefixLength 1
+            $Network = Get-IPNetwork 200.2.3.4 -PrefixLength 1
             
             $Network.NetworkId | Should -Be '128.0.0.0'
             $Network.Broadcast | Should -Be '255.255.255.255'
@@ -83,7 +114,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /1 Network Space Using Subnet Mask Notation  (upper range)' {
-            $Network = Get-IPNetwork -IPAddress 200.2.3.4 -SubnetMask 128.0.0.0
+            $Network = Get-IPNetwork 200.2.3.4 -SubnetMask 128.0.0.0
             
             $Network.NetworkId | Should -Be '128.0.0.0'
             $Network.Broadcast | Should -Be '255.255.255.255'
@@ -99,7 +130,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /8 Network Space Using CIDR Notation' {
-            $Network = Get-IPNetwork -IPAddress 10.250.1.100 -PrefixLength 8
+            $Network = Get-IPNetwork 10.250.1.100 8
             
             $Network.NetworkId | Should -Be '10.0.0.0'
             $Network.Broadcast | Should -Be '10.255.255.255'
@@ -115,7 +146,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /8 Network Space Using Subnet Mask Notation' {
-            $Network = Get-IPNetwork -IPAddress 10.250.1.100 -SubnetMask 255.0.0.0
+            $Network = Get-IPNetwork 10.250.1.100 255.0.0.0
             
             $Network.NetworkId | Should -Be '10.0.0.0'
             $Network.Broadcast | Should -Be '10.255.255.255'
@@ -244,7 +275,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /31 Network Space Using CIDR Notation' {
-            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 31 -ReturnAllIPs
+            $Network = Get-IPNetwork 10.1.1.1 31 -ReturnAllIPs
             
             $Network.NetworkId | Should -Be '10.1.1.0'
             $Network.Broadcast | Should -Be '10.1.1.1'
@@ -264,7 +295,7 @@ Describe 'Unit Tests' {
         }
 
         It 'Checks /31 Network Space Using Subnet Mask Notation ' {
-            $Network = Get-IPNetwork -IPAddress 10.1.1.1 -SubnetMask 255.255.255.254 -ReturnAllIPs
+            $Network = Get-IPNetwork 10.1.1.1 255.255.255.254 -ReturnAllIPs
             
             $Network.NetworkId | Should -Be '10.1.1.0'
             $Network.Broadcast | Should -Be '10.1.1.1'
