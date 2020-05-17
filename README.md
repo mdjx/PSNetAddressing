@@ -27,6 +27,7 @@ $IPs = (Get-IPNetwork -IPAddress 10.1.1.0 -PrefixLength 24 -ReturnAllIPs).AllIPs
 ### Get-IPNetwork
 
 `Get-IPNetwork -IPAddress <String> -SubnetMask <String> [-ReturnAllIPs]`
+
 `Get-IPNetwork -IPAddress <String> -PrefixLength <Int> [-ReturnAllIPs]`
 
 #### Parameters
