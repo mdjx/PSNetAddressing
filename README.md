@@ -10,8 +10,8 @@ What do you do when you need a generate a list of all IPs for a network? This is
 
 ```powershell
 $IPs = @()
-$Subnet = "10.1.1"
-1..254 | % {$IPs += "$Subnet.$_"}
+$NetworkId = "10.1.1"
+1..254 | % {$IPs += "$NetworkId.$_"}
 ```
 
 However, this isn't great. Validation for` $Subnet` is difficult, working with anything other than a `/24` also requires a lot of work which makes it impractical to cleanly integrate into modules. 
