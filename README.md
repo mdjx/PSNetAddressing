@@ -1,5 +1,7 @@
 # PSNetAddressing
 
+[![Version](https://img.shields.io/badge/version-1.0-blue.svg)](https://semver.org)
+
 PSNetAddressing is a PowerShell module that makes dealing with IP addresses easy. 
 
 Given an IP address and subnet mask or CIDR prefix, it returns a list of all IPs inside the subnet, the Network Id, Broadcast, First and Last Usable IPs, and Wildcard Mask. 
@@ -14,7 +16,7 @@ $NetworkId = "10.1.1"
 1..254 | % {$IPs += "$NetworkId.$_"}
 ```
 
-However, this isn't great. Validation for` $Subnet` is difficult, working with anything other than a `/24` also requires a lot of work which makes it impractical to cleanly integrate into modules. 
+However, this isn't great. Validation for` $NetworkId` is difficult, working with anything larger than a `/24` also requires a lot of work which makes it impractical to cleanly integrate into modules. 
 
 With `PSNetAddressing`, the above code becomes:
 
@@ -26,9 +28,12 @@ $IPs = (Get-IPNetwork -IPAddress 10.1.1.0 -PrefixLength 24 -ReturnAllIPs).AllIPs
 
 ### Get-IPNetwork
 
+You have the option of specifying either a Subnet Mask or a CIDR Prefix Length
+
 `Get-IPNetwork -IPAddress <String> -SubnetMask <String> [-ReturnAllIPs]`
 
 `Get-IPNetwork -IPAddress <String> -PrefixLength <Int> [-ReturnAllIPs]`
+
 
 #### Parameters
 
@@ -132,7 +137,7 @@ AllIPs       : {10.1.1.1, 10.1.1.2}
 ```
 
 ```powershell
-PS C:\> Get-IPNetwork -IPAddress 45.122.250.67 255.255.255.128 -ReturnAllIPs
+PS C:\> Get-IPNetwork 45.122.250.67 255.255.255.128 -ReturnAllIPs
 
 
 NetworkId    : 45.122.250.0
@@ -161,7 +166,7 @@ This will install several modules if you do not already have them, see `build.ps
 
 ### Manually
 
-Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSNetAddressing` for PowerShell 5.1 or `$Home\Documents\PowerShell\Modules\PSNetAddressing` for PowerShell 7, and rename the `.ps1` files to `.psm1`. 
+Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSNetAddressing` for PowerShell 5.1 or `$Home\Documents\PowerShell\Modules\PSNetAddressing` for PowerShell 7, and rename the `.ps1` file(s) to `.psm1`. 
 
 
 ## Release Notes
