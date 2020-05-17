@@ -1,6 +1,6 @@
 # PSNetAddressing
 
-[![Version](https://img.shields.io/badge/version-1.0-blue.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-1.0-blue.svg)](https://semver.org)
 
 PSNetAddressing is a PowerShell module that makes dealing with IP addresses easy. 
 
@@ -16,7 +16,7 @@ $NetworkId = "10.1.1"
 1..254 | % {$IPs += "$NetworkId.$_"}
 ```
 
-However, this isn't great. Validation for` $NetworkId` is difficult, working with anything larger than a `/24` also requires a lot of work which makes it impractical to cleanly integrate into modules. 
+However, this isn't great. Validation for` $NetworkId` is difficult, working with anything larger than a `/24` requires a lot of work which makes it impractical to cleanly integrate into modules or scripts. 
 
 With `PSNetAddressing`, the above code becomes:
 
