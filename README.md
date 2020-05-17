@@ -156,6 +156,9 @@ AllIPs       : {45.122.250.1, 45.122.250.2, 45.122.250.3, 45.122.250.4...}
 
 ## Installation
 
+### Via PowerShell Gallery
+
+`Install-Module -Name PSNetAddressing -Scope CurrentUser`
 
 ### Via Git
 
