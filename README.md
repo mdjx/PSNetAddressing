@@ -6,7 +6,32 @@ PSNetAddressing is a PowerShell module that makes dealing with IP addresses easy
 
 Given an IP address and subnet mask or CIDR prefix, it returns a list of all IPs inside the subnet, the Network Id, Broadcast, First and Last Usable IPs, and Wildcard Mask. 
 
-## Why
+## Installation
+
+### Via PowerShell Gallery
+
+`Install-Module -Name PSNetAddressing -Scope CurrentUser`
+
+### Via Git
+
+Clone the repository and run `.\build.ps1 deploy`.
+
+This will install several modules if you do not already have them, see `build.ps1` for details. These are only required for the build process and are not otherwise used by `PSNetAddressing`.
+
+
+### Manually
+
+Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSNetAddressing` for PowerShell 5.1 or `$Home\Documents\PowerShell\Modules\PSNetAddressing` for PowerShell 7, and rename the `.ps1` file(s) to `.psm1`. 
+
+
+## Release Notes
+
+### `1.0`
+
+- Initial release
+
+
+## Motivation
 
 What do you do when you need a generate a list of all IPs for a network? This is what most of us have been doing:
 
@@ -151,29 +176,3 @@ TotalIPs     : 128
 UsableIPs    : 126
 AllIPs       : {45.122.250.1, 45.122.250.2, 45.122.250.3, 45.122.250.4...}
 ```
-
-
-
-## Installation
-
-### Via PowerShell Gallery
-
-`Install-Module -Name PSNetAddressing -Scope CurrentUser`
-
-### Via Git
-
-Clone the repository and run `.\build.ps1 deploy`.
-
-This will install several modules if you do not already have them, see `build.ps1` for details. These are only required for the build process and are not otherwise used by `PSNetAddressing`.
-
-
-### Manually
-
-Copy the files from `src` to `$Home\Documents\WindowsPowerShell\Modules\PSNetAddressing` for PowerShell 5.1 or `$Home\Documents\PowerShell\Modules\PSNetAddressing` for PowerShell 7, and rename the `.ps1` file(s) to `.psm1`. 
-
-
-## Release Notes
-
-### `1.0`
-
-Initial release
