@@ -1,6 +1,6 @@
 # PSIPAddressing
 
-PSIPAddressing is a PowerShell modules that makes dealing with IP addresses easy. 
+PSIPAddressing is a PowerShell module that makes dealing with IP addresses easy. 
 
 Given an IP address and subnet mask or CIDR prefix, it returns a list of all IPs inside the subnet, the Network Id, Broadcast, First and Last Usable IPs, and Wildcard Mask. 
 
