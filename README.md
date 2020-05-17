@@ -71,7 +71,7 @@ Example: 16
 
 `-ReturnAllIPs`
 
-If set, returns a populated array property called `AllIPs` that contains all usable IP addresses within the specified subnet. This has been set as an optional switch as large networks can return millioons if not billions of usable IPs, which can consume significant time, CPU, and memory. 
+If set, returns a populated array property called `AllIPs` that contains all usable IP addresses within the specified subnet. This has been set as an optional switch as large networks can return millions if not billions of usable IPs, which can consume significant time, CPU, and memory. 
 
 ```yaml
 Type: SwitchParameter
