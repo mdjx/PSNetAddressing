@@ -112,7 +112,7 @@ AllIPs       : {}
 ```
 
 ```powershell
-PS C:\> Get-IPNetwork -IPAddress 10.1.1.1  -PrefixLength 30 -ReturnAllIPs
+PS C:\> Get-IPNetwork -IPAddress 10.1.1.1 -PrefixLength 30 -ReturnAllIPs
 
 
 NetworkId    : 10.1.1.0
