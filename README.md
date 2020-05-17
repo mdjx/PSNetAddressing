@@ -86,7 +86,7 @@ PS C:\> Get-IPNetwork -IPAddress 10.250.1.100 -SubnetMask 255.255.255.0
 NetworkId    : 10.250.1.0
 Broadcast    : 10.250.1.255
 SubnetMask   : 255.255.255.0
-SubnetLength : 24
+PrefixLength : 24
 WildcardMask : 0.0.0.255
 FirstIP      : 10.250.1.1
 LastIP       : 10.250.1.254
