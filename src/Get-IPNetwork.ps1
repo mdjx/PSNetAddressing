@@ -118,12 +118,12 @@ function Get-IPNetwork {
     }
 
 
-    $obj = New-Object -TypeName psobject -Property @{
+    $obj = [PSCustomObject]@{
+        NetworkId = ($NetworkId).IPAddressToString
+        Broadcast = ($Broadcast).IPAddressToString
         SubnetMask = ($SubnetMask).IPAddressToString
         PrefixLength = $PrefixLength
         WildcardMask = ($WildcardMask).IPAddressToString
-        NetworkId = ($NetworkId).IPAddressToString
-        Broadcast = ($Broadcast).IPAddressToString
         FirstIP = ($FirstIP).IPAddressToString
         LastIP = ($LastIP).IPAddressToString
         TotalIPs = $TotalIPs
@@ -131,5 +131,6 @@ function Get-IPNetwork {
         AllIPs = $AllIPs
     }
 
-    Write-Output $obj | Select-Object NetworkId, Broadcast, SubnetMask, PrefixLength, WildcardMask, FirstIP, LastIP, TotalIPs, UsableIPs, AllIPs
+    Write-Output $obj
 }
+
