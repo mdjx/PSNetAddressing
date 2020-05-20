@@ -1,6 +1,6 @@
 # PSNetAddressing
 
-[![version](https://img.shields.io/badge/version-1.0-blue.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://semver.org)
 
 PSNetAddressing is a PowerShell module that makes dealing with IP addresses easy. 
 
